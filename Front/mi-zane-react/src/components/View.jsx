@@ -1,12 +1,20 @@
-import React from "react";
-
+import React, { useState } from "react";
+import SignUp from "./SignUp";
 
 const View = () => {
+    const [isSignedUp, setIsSignedUp] = useState(false);
+    const handleSignUpClick = () => {
+        setIsSignedUp(true);
+    };
+    const closePopup = () => {
+        setIsSignedUp(false);
+    };
+
     return (
         <div>
             <div className="top-navigation">
                 <button className="nav-button">Sign In</button>
-                <button className="nav-button">Sign Up</button>
+                <button className="nav-button" onClick={handleSignUpClick}>Sign Up</button>
 
                 <div className="hamburger-menu">
                     <div className="bar"></div>
@@ -47,6 +55,7 @@ const View = () => {
                 <div className="section-title">Follow Us</div>
                 <p>Social media platforms.</p>
             </div>
+            {isSignedUp && <SignUp onClose={closePopup} />}
         </div>
     );
 }
