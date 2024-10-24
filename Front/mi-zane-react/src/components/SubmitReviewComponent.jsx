@@ -1,32 +1,37 @@
 // src/components/SubmitReviewComponent.jsx
-
+import { useAuth } from '../components/AuthContext';
 import React, { useState } from 'react';
 import axios from 'axios';
 
 const SubmitReviewComponent = () => {
   const [reviewText, setReviewText] = useState("");
-
+  const { isSignedIn } = useAuth();
 
 
   const handleReview = async() => {
-    try {
-      var Email = localStorage.getItem('Email');
-      const response = await axios.post('http://localhost:8000/PostReviews', {
-        "review": reviewText,
-        "Email": Email
-      });
-      console.log("review created" + response.data)
-      alert("Review created successfully");
-  } catch(error) {
-    console.error('Error:' + error);
-    alert("Problems encountered while posting the review");
-  }
+    if(isSignedIn){
+      try {
+        var Email = localStorage.getItem('Email');
+        const response = await axios.post('http://localhost:8000/PostReviews', {
+          "review": reviewText,
+          "Email": Email
+        });
+        console.log("review created" + response.data)
+        alert("Review created successfully");
+        window.location.reload(); // Recarga toda la página
+    } catch(error) {
+      console.error('Error:' + error);
+      alert("Problems encountered while posting the review");
+    }
+    }
+    else{
+      alert("You must be logged in to write a review")
+    }
 }
     
 const handleSubmit = (e) => {
   e.preventDefault(); 
   handleReview();
-  window.location.reload(); // Recarga toda la página
 };
 
   return (
@@ -43,4 +48,4 @@ const handleSubmit = (e) => {
   );
 };
 
-export default SubmitReviewComponent
+export default SubmitReviewComponent;

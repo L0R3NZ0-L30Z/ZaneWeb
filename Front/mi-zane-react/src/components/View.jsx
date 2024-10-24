@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
+import { useAuth } from '../components/AuthContext';
 
 const View = () => {
+    const { isSignedIn, setIsSignedIn } = useAuth();
     const [isSignedUp, setIsSignedUp] = useState(false);
-    const [isSignedIn, setIsSignedIn] = useState(false);
     const handleSignUpClick = () => {
         setIsSignedUp(true);
     };
     const handleSignInClick = () =>{
         setIsSignedIn(true);
+    }
+    const handleLogOutClick = () =>{
+        setIsSignedIn(false);
+        alert("Logged out successfully");
     }
     const closePopup = () => {
         setIsSignedUp(false);
@@ -19,9 +24,9 @@ const View = () => {
     return (
         <div>
             <div className="top-navigation">
-                <button className="nav-button" onClick={handleSignInClick}>Sign In</button>
-                <button className="nav-button" onClick={handleSignUpClick}>Sign Up</button>
-
+                {!isSignedIn && <button className="nav-button" onClick={handleSignInClick}>Sign In</button>}
+                {!isSignedIn && <button className="nav-button" onClick={handleSignUpClick}>Sign Up</button>}
+                {isSignedIn && <button className="nav-button" onClick={handleLogOutClick}>Log Out</button>}
                 <div className="hamburger-menu">
                     <div className="bar"></div>
                     <div className="bar"></div>

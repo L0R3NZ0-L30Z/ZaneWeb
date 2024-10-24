@@ -1,13 +1,16 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useAuth } from '../components/AuthContext';
 
 const SignIn = ({onClose}) =>{
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isEmail, setIsEmail] = useState("");
     const [isPassword, setIsPassword] = useState("");
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { isSignedIn, setIsSignedIn } = useAuth();
+    
     const handleSignOn = async() =>{
+        
         try{
             const response = await axios.post('http://localhost:8000/LoggedIn', {
             "password": password,
@@ -17,12 +20,12 @@ const SignIn = ({onClose}) =>{
             setIsPassword(response.data.password);
             setIsEmail(response.data.email);
             alert("logged in successfully");
-            setIsLoggedIn(true);
+            setIsSignedIn(true);
         }
         catch(error){
          console.log(error);   
          alert("Problems encountered while logging in");
-         setIsLoggedIn(false);
+         setIsSignedIn(false);
         }
     }
     const handleSubmit = (e) => {
